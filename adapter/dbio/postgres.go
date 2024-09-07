@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/Sa2/sqlc-playground/adapter/env"
-	"github.com/Sa2/sqlc-playground/gen/db"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -35,8 +34,4 @@ func InitPgxDBConnPool(ctx context.Context) error {
 }
 func GetPgxConnPool() *pgxpool.Pool {
 	return pool
-}
-
-func GetSQLC() *db.Queries {
-	return db.New(pool)
 }

@@ -33,6 +33,21 @@ CREATE TABLE public.migrations (
 ALTER TABLE public.migrations OWNER TO postgres;
 
 --
+-- Name: user_details; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.user_details (
+    id character varying(36) NOT NULL,
+    user_id character varying(36) NOT NULL,
+    detail_info1 character varying(255) NOT NULL,
+    detail_info2 character varying(255) NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.user_details OWNER TO postgres;
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -56,11 +71,27 @@ ALTER TABLE ONLY public.migrations
 
 
 --
+-- Name: user_details user_details_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_details
+    ADD CONSTRAINT user_details_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_details user_details_ibfk_1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_details
+    ADD CONSTRAINT user_details_ibfk_1 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --

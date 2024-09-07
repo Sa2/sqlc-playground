@@ -11,5 +11,6 @@ migrate-down:
 generate-sqlc:
 	@echo "Generating SQL orm code"
 	@docker pull sqlc/sqlc
-	@docker run --rm -v $PWD:/src -w /src sqlc/sqlc generate
+	@rm -rf gen
+	@docker run --rm -v $(dir $(abspath $(lastword $(MAKEFILE_LIST)))):/src -w /src sqlc/sqlc generate
 

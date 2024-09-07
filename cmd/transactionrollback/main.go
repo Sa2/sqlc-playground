@@ -2,12 +2,14 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"log/slog"
 
 	"github.com/Sa2/sqlc-playground/adapter/dbio"
 	"github.com/Sa2/sqlc-playground/gen/db"
+	"github.com/oklog/ulid/v2"
 )
 
 func main() {
@@ -26,13 +28,28 @@ func app(ctx context.Context) error {
 	}
 	pool := dbio.GetPgxConnPool()
 	defer pool.Close()
-	conn := db.New(pool)
-	users, err := conn.GetUsers(ctx)
+	query := db.New(pool)
+	users, err := query.GetUsers(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to get users: %w", err)
 	}
 	for _, user := range users {
 		fmt.Println(user)
 	}
-	return nil
+	tx, err := pool.Begin(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to begin transaction: %w", err)
+	}
+	defer tx.Rollback(ctx)
+	txQuery := query.WithTx(tx)
+	_, err = txQuery.CreateUser(ctx, db.CreateUserParams{
+		ID:       string(ulid.Make().String()),
+		Name:     "test",
+		Email:    fmt.Sprintf("%s@domain", ulid.Make().String()),
+		Password: "password",
+	})
+	if err != nil {
+		fmt.Errorf("failed to create user: %w", err)
+	}
+	return errors.New("error occurred")
 }

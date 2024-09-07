@@ -27,12 +27,12 @@ func app(ctx context.Context) error {
 	pool := dbio.GetPgxConnPool()
 	defer pool.Close()
 	conn := db.New(pool)
-	users, err := conn.GetUsers(ctx)
+	userInfos, err := conn.GetUserInfos(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to get users: %w", err)
 	}
-	for _, user := range users {
-		fmt.Println(user)
+	for _, userInfo := range userInfos {
+		fmt.Println(userInfo)
 	}
 	return nil
 }

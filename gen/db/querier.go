@@ -6,13 +6,14 @@ package db
 
 import (
 	"context"
-
-	"github.com/jackc/pgx/v5/pgconn"
 )
 
 type Querier interface {
-	CreateUser(ctx context.Context, arg CreateUserParams) (pgconn.CommandTag, error)
+	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
+	CreateUserDetail(ctx context.Context, arg CreateUserDetailParams) (UserDetail, error)
 	GetUserByID(ctx context.Context, id string) (User, error)
+	GetUserDetail(ctx context.Context) ([]UserDetail, error)
+	GetUserInfos(ctx context.Context) ([]GetUserInfosRow, error)
 	GetUsers(ctx context.Context) ([]User, error)
 }
 
