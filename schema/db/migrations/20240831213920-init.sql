@@ -1,9 +1,7 @@
 
 -- +migrate Up
 
-CREATE SCHEMA sqlc;
-
-CREATE TABLE sqlc.users (
+CREATE TABLE users (
   id VARCHAR(36) PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
@@ -12,6 +10,4 @@ CREATE TABLE sqlc.users (
 );
 
 -- +migrate Down
-DROP TABLE sqlc.users;
-
-DROP SCHEMA sqlc;
+DROP TABLE users;

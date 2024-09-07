@@ -1,9 +1,12 @@
-version: "3"
+version: "3.8"
 
 services:
   db:
     image: postgres:16
     restart: always
+    networks:
+      fixed_network:
+        ipv4_address: 10.0.3.10
     environment:
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: "postgres"
@@ -12,3 +15,12 @@ services:
       - ./data/db/postgres/data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+
+
+networks:
+  fixed_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.3.0/24
